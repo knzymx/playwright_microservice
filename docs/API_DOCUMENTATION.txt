@@ -1,0 +1,198 @@
+WEB SCRAPING API DOCUMENTATION
+=============================
+
+Overview
+--------
+This application provides a web scraping service with proxy support using Playwright. It offers endpoints 
+for fetching web pages and interacting with web elements through a REST API.
+
+Base URL
+--------
+http://44.243.25.169:5000
+
+
+Endpoints
+---------
+
+1. Health Check
+--------------
+Check if the service and Redis are running properly.
+
+Endpoint: /health
+Method: GET
+Response Example:
+{
+    "status": "healthy",
+    "redis": "connected"
+}
+
+
+2. Fetch URL
+-----------
+Retrieve the HTML content of a webpage using proxy rotation.
+
+Endpoint: /fetch
+Method: GET
+Parameters:
+- url (required): The URL to fetch
+
+Headers:
+- X-API-KEY (optional): API key for custom rate limits
+
+Example Request:
+curl "http://44.243.25.169:5000/fetch?url=https://example.com" -H "X-API-KEY: your_api_key"
+
+Success Response:
+{
+    "html": "<html>...</html>"
+}
+
+Error Response:
+{
+    "error": "Error message here"
+}
+
+
+3. Page Interactions
+------------------
+Perform interactions with web elements on a page.
+
+Endpoint: /interact
+Method: POST
+Content-Type: application/json
+
+Request Body Example:
+{
+    "url": "https://example.com",
+    "actions": [
+        {
+            "type": "click",
+            "selector": "#submit-button"
+        },
+        {
+            "type": "fill",
+            "form_data": {
+                "#username": "user123",
+                "#password": "pass123"
+            }
+        },
+        {
+            "type": "scroll"
+        }
+    ]
+}
+
+Action Types:
+- click: Click an element using a CSS selector
+- fill: Fill form fields using selectors and values
+- scroll: Scroll to the bottom of the page
+
+
+Rate Limiting
+------------
+Default API limits:
+- 10,000 requests per day
+- 1,000 requests per hour
+
+With API Key (/fetch endpoint):
+- 20,000 requests per day
+
+Note: Rate limits are tracked by IP address for non-authenticated requests and by API key when provided.
+
+
+Proxy Configuration
+-----------------
+The application uses ProxyMesh with three proxy servers:
+- Los Angeles, CA (us-ca.proxymesh.com)
+- Seattle, WA (us-wa.proxymesh.com)
+- Atlanta, GA (open.proxymesh.com)
+
+
+Environment Variables
+-------------------
+Required environment variables:
+PROXYMESH_USER=spreezerye
+PROXYMESH_PASS=dahXe3-zangad-xatgis 
+REDIS_HOST=54.213.219.243
+REDIS_PASSWORD=hBZAQP6gNhh1Ct5cToBy
+REDIS_PORT=6379
+
+
+Running the Application
+---------------------
+
+Using Docker:
+1. Build the image:
+   docker build -t web-scraper .
+
+2. Run the container:
+   docker run -p 5000:5000 --env-file .env web-scraper
+
+Without Docker:
+1. Install dependencies:
+   pip install -r requirements.txt
+
+2. Run the application:
+   python run.py
+
+
+Example Usage
+------------
+
+1. Fetch a webpage with API key (Python):
+   import requests
+
+   headers = {
+       "X-API-KEY": "your_api_key"
+   }
+   
+   response = requests.get(
+       "http://44.243.25.169:5000/fetch",
+       params={"url": "https://example.com"},
+       headers=headers
+   )
+   html_content = response.json()["html"]
+
+2. Interact with a webpage (Python):
+   import requests
+
+   response = requests.post(
+       "http://44.243.25.169:5000/interact",
+       json={
+           "url": "https://example.com/login",
+           "actions": [
+               {
+                   "type": "fill",
+                   "form_data": {
+                       "#username": "user123",
+                       "#password": "pass123"
+                   }
+               },
+               {
+                   "type": "click",
+                   "selector": "#login-button"
+               }
+           ]
+       }
+   )
+
+
+Error Handling
+-------------
+The API returns appropriate HTTP status codes:
+- 200: Successful request
+- 400: Invalid request (e.g., missing URL)
+- 429: Rate limit exceeded
+- 500: Server error
+
+Each error response includes a JSON object with an "error" field containing a description of the error.
+
+
+Notes
+-----
+- The application uses Playwright for browser automation
+- Proxy rotation is handled automatically
+- Redis is used for rate limiting and caching
+- All requests are made through a proxy for anonymity
+- The application runs with 4 Gunicorn workers by default
+- Higher rate limits are available with API key authentication

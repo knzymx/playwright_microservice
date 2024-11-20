@@ -1,0 +1,21 @@
+{
+  "name": "Playwright Service",
+  "dockerFile": "../Dockerfile",
+  "context": "..",
+  "runArgs": ["--network=host"],
+  "appPort": [5000],
+  "remoteUser": "root",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+  "postCreateCommand": "pip install -r requirements.txt"
+}

@@ -1,0 +1,7 @@
+flask
+playwright
+gunicorn
+python-dotenv
+Flask-Limiter
+redis
+
