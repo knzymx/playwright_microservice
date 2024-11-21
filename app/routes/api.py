@@ -24,7 +24,7 @@ def fetch_url():
         try:
             page = context.new_page()
             current_app.logger.debug(f'Navigating to {url}')
-            page.goto(url, wait_until='networkidle', timeout=30000)
+            page.goto(url, wait_until='networkidle', timeout=60000)
             html = page.content()
             return jsonify({'html': html})
         finally:
