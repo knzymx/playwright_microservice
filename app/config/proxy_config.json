@@ -1,0 +1,19 @@
+{
+    "proxies": [
+        {
+            "host": "us-ca.proxymesh.com",
+            "port": "31280",
+            "location": "Los Angeles, CA"
+        },
+        {
+            "host": "us-wa.proxymesh.com",
+            "port": "31280",
+            "location": "Seattle, WA"
+        },
+        {
+            "host": "open.proxymesh.com",
+            "port": "31280",
+            "location": "Atlanta, GA"
+        }
+    ]
+} 
