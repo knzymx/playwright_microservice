@@ -8,7 +8,7 @@ for fetching web pages and interacting with web elements through a REST API.
 
 Base URL
 --------
-http://44.243.25.169:5000
+http://52.27.252.245:5000
 
 
 Endpoints
@@ -40,7 +40,7 @@ Headers:
 - X-API-KEY (optional): API key for custom rate limits
 
 Example Request:
-curl "http://44.243.25.169:5000/fetch?url=https://example.com" -H "X-API-KEY: your_api_key"
+curl "http://52.27.252.245:5000/fetch?url=https://example.com" -H "X-API-KEY: your_api_key"
 
 Success Response:
 {
@@ -147,7 +147,7 @@ Example Usage
    }
    
    response = requests.get(
-       "http://44.243.25.169:5000/fetch",
+       "http://52.27.252.245:5000/fetch",
        params={"url": "https://example.com"},
        headers=headers
    )
@@ -157,7 +157,7 @@ Example Usage
    import requests
 
    response = requests.post(
-       "http://44.243.25.169:5000/interact",
+       "http://52.27.252.245:5000/interact",
        json={
            "url": "https://example.com/login",
            "actions": [
